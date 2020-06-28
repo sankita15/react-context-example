@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react";
+import TodoComponent from "./TodoComponent";
+import TodoContext from "./TodoContext";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    const [todos, setTodos] = useState([{id: 1, data: 'finish lunch', complete: false}])
+    const [text, setText] = useState('')
+
+    const addTodo = event => {
+        if (text)
+            setTodos(todos.concat({id: 1, data: text, complete: false}))
+
+        event.preventDefault()
+    }
+
+    const toggleTodo = data => {
+        setTodos(todos.map(todo => {
+            if (todo.data === data) {
+                return {...todo, complete: !todo.complete}
+            } else {
+                return todo
+            }
+        }))
+    }
+
+    return (
+        <TodoContext.Provider value={{addTodo, todos, toggleTodo, setText, text}}>
+            <TodoComponent/>
+        </TodoContext.Provider>
+    )
 }
 
-export default App;
+export default App
